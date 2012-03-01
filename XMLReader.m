@@ -88,8 +88,15 @@ NSString *const kXMLReaderTextNodeKey = @"text";
 
 + (NSDictionary *)dictionaryForXMLString:(NSString *)string error:(NSError **)error
 {
-    NSData *data = [string dataUsingEncoding:NSUTF8StringEncoding];
-    
+    NSArray* lines = [string componentsSeparatedByString:@"\n"];
+    NSMutableString* strData = [NSMutableString stringWithString:@""];
+
+    for (int i = 0; i < [lines count]; i++)
+    {
+        [strData appendString:[[lines objectAtIndex:i] stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]]];
+    }
+
+    NSData *data = [strData dataUsingEncoding:NSUTF8StringEncoding];
     return [XMLReader dictionaryForXMLData:data error:error];
 }
 
